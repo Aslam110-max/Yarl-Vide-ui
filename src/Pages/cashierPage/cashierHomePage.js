@@ -12,32 +12,44 @@ import MobileFoodOrderPage from "../../components/cashierPageComponent/mobileFoo
 import { logout } from "../../services/loginPageApi";
 import Navbar from "../../components/Navbar/Navbar";
 
+
 const CashierHomePage = () => {
+  // State for selected foods in the order
   const [selectedFoods, setSelectedFoods] = useState([]);
+  // State for the currently selected table
   const [selectedTable, setSelectedTable] = useState("");
+  // State to show/hide the table selection page
   const [isShowTable, setIsShowTable] = useState(false);
+  // State to show/hide the mobile order page
   const [isShowMobileOrderPage, setIsShowMobileOrderPage] = useState(false);
-  // Calling Api
+
+  // Menu data states
   const [seMenu, setSEMenuData] = useState([]);
   const [mcMenu, setMCMenuData] = useState([]);
+
+  // Fetch menu details on mount
   useEffect(() => {
     getMenuDetails({ setSEMenuData, setMCMenuData });
   }, []);
-  /////////////////////////////////
+
+  // Navigation hook (not currently used)
   const navigate = useNavigate();
+
+  // Handle cart icon click to show mobile order page
   const handleCartIconClick = () => {
     setIsShowMobileOrderPage(true);
     //  navigate('/cashier-home-page/orders');
   };
-  const [searchText, setSearchText] = useState("");
-  return (
 
+  // State for search text
+  const [searchText, setSearchText] = useState("");
+
+  return (
     <div className="dark:bg-secondary dark:text-white">
+      {/* Navbar with search functionality */}
       <Navbar setSearchText={setSearchText}/>
 
-
-
-
+      {/* Conditional rendering for table selection, mobile order, or main page */}
       {isShowTable ? (
         <SelectTablePage
           setSelectedTable={setSelectedTable}
@@ -53,17 +65,14 @@ const CashierHomePage = () => {
         />
       ) : (
         <div className="homePage">
-          
-            <div className="header-mobile">
+          <div className="header-mobile">
             <CashierSearchBar setSearchText={setSearchText} />
-              <FontAwesomeIcon
-                icon={faCartShopping}
-                className="cart-icon"
-                onClick={handleCartIconClick}
-              />
-            </div>
-            
-          
+            <FontAwesomeIcon
+              icon={faCartShopping}
+              className="cart-icon"
+              onClick={handleCartIconClick}
+            />
+          </div>
           <div className="menu-row-cashier">
             <FoodMenu
               seMenu={seMenu}
@@ -83,4 +92,5 @@ const CashierHomePage = () => {
     </div>
   );
 };
+
 export default CashierHomePage;
